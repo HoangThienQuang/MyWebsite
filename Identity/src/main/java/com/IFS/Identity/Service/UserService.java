@@ -6,6 +6,8 @@ import com.IFS.Identity.dto.request.UserCreationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -23,5 +25,15 @@ public class UserService {
         user.setDob(request.getDob());
 
         return userRepository.save(user);
+    }
+
+    public List<User> getAllUser()
+    {
+        return userRepository.findAll();
+    }
+
+    public User getUserById(String userId)
+    {
+        return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
