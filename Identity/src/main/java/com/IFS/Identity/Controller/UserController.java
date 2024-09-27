@@ -4,6 +4,7 @@ import com.IFS.Identity.Entity.User;
 import com.IFS.Identity.Service.UserService;
 import com.IFS.Identity.dto.request.UserCreationRequest;
 import com.IFS.Identity.dto.request.UserUpdateRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class UserController {
 
     //create
     @PostMapping("/users")
-    User createUser(@RequestBody UserCreationRequest request)
+    User createUser(@Valid @RequestBody UserCreationRequest request)
     {
         return userService.createRequest(request);
     }
@@ -37,7 +38,7 @@ public class UserController {
 
     //update
     @PutMapping("/{userId}")
-    User updateUserById(@RequestBody UserUpdateRequest request, @PathVariable("userId") String userId)
+    User updateUserById(@Valid @RequestBody UserUpdateRequest request, @PathVariable("userId") String userId)
     {
         return userService.updateUserById(request,userId);
     }
