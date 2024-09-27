@@ -2,8 +2,10 @@ package com.IFS.Identity.Controller;
 
 import com.IFS.Identity.Entity.User;
 import com.IFS.Identity.Service.UserService;
+import com.IFS.Identity.dto.ResponseCode;
 import com.IFS.Identity.dto.request.UserCreationRequest;
 import com.IFS.Identity.dto.request.UserUpdateRequest;
+import com.IFS.Identity.dto.response.ApiResponseSuccess;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +20,15 @@ public class UserController {
 
     //create
     @PostMapping("/users")
-    User createUser(@Valid @RequestBody UserCreationRequest request)
+    ApiResponseSuccess<User> createUser(@Valid @RequestBody UserCreationRequest request)
     {
-        return userService.createRequest(request);
+        ApiResponseSuccess<User> apiResponseSuccess = new ApiResponseSuccess<>();
+
+        apiResponseSuccess.setCode(ResponseCode.SUCCESS_STATUS.getCode());
+        apiResponseSuccess.setMessage(ResponseCode.SUCCESS_STATUS.getMessage());
+        apiResponseSuccess.setData(userService.createRequest(request));
+
+        return apiResponseSuccess;
     }
 
     //read
@@ -44,11 +52,18 @@ public class UserController {
     }
 
     //delete
-    @DeleteMapping("{userId}")
+    @DeleteMapping("/{userId}")
     String deleteUser(@PathVariable("userId") String userId)
     {
         userService.deleteUserById(userId);
         return "user has been deleted";
     }
+
+//    @DeleteMapping("/user/{userName}")
+//    String deleteUserByName(@PathVariable("userName") String userName)
+//    {
+//        userService.deleteUserByUserName(userName);
+//        return "user has been deleted";
+//    }
 
 }

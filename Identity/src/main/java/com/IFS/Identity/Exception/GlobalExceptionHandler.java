@@ -1,22 +1,52 @@
 package com.IFS.Identity.Exception;
 
+import com.IFS.Identity.dto.ResponseCode;
+import com.IFS.Identity.dto.response.ApiResponseError;
+import com.IFS.Identity.dto.response.ApiResponseSuccess;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.Objects;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = RuntimeException.class)
-    ResponseEntity<String> handlerRunTimeException(RuntimeException exception)
+    //default exception
+    @ExceptionHandler(value = Exception.class)
+    ResponseEntity<ApiResponseError> defaultException(Exception exception)
     {
-        return ResponseEntity.badRequest().body(exception.getMessage());
+        ApiResponseError apiResponseError = new ApiResponseError();
+        apiResponseError.setCode(ResponseCode.NOT_IMPLEMENT_EXCEPTION.getCode()); 
+        apiResponseError.setMessage(exception.getMessage());
+        return ResponseEntity.badRequest().body(apiResponseError);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    ResponseEntity<String> handlerMethodArgumentNotValid(MethodArgumentNotValidException exception)
+    ResponseEntity<ApiResponseError> handlerMethodArgumentNotValid(MethodArgumentNotValidException exception)
     {
-        return ResponseEntity.badRequest().body(exception.getFieldError().getDefaultMessage());
+        ApiResponseError apiResponseError = new ApiResponseError();
+
+        String errorKey = exception.getFieldError().getDefaultMessage();
+        ResponseCode errorCode = ResponseCode.valueOf(errorKey);
+
+        apiResponseError.setCode(errorCode.getCode());
+        apiResponseError.setMessage(errorCode.getMessage());
+
+        return ResponseEntity.badRequest().body(apiResponseError);
     }
+
+    @ExceptionHandler(value = AppException.class)
+    ResponseEntity<ApiResponseError> handlerAppException(AppException exception)
+    {
+        ApiResponseError apiResponseError = new ApiResponseError();
+
+        apiResponseError.setCode(exception.getResponseCode().getCode());
+        apiResponseError.setMessage(exception.getResponseCode().getMessage());
+
+        return ResponseEntity.badRequest().body(apiResponseError);
+    }
+
 }
