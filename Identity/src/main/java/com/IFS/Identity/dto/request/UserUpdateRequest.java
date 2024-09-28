@@ -1,5 +1,6 @@
 package com.IFS.Identity.dto.request;
 
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserUpdateRequest {
+    @Size(min = 8,message = "PASSWORD_INVALID")
     private String passWord;
     private String firstName;
     private String lastName;

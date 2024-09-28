@@ -53,10 +53,13 @@ public class UserController {
 
     //delete
     @DeleteMapping("/{userId}")
-    String deleteUser(@PathVariable("userId") String userId)
+    ApiResponseSuccess deleteUser(@PathVariable("userId") String userId)
     {
+        ApiResponseSuccess apiResponseSuccess = new ApiResponseSuccess<>();
+        apiResponseSuccess.setCode(ResponseCode.SUCCESS_STATUS.getCode());
+        apiResponseSuccess.setMessage("User has been delete");
         userService.deleteUserById(userId);
-        return "user has been deleted";
+        return apiResponseSuccess;
     }
 
 //    @DeleteMapping("/user/{userName}")
