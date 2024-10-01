@@ -2,12 +2,15 @@ package com.IFS.Identity.Controller;
 
 import com.IFS.Identity.Entity.User;
 import com.IFS.Identity.Service.UserService;
+import com.IFS.Identity.dto.ResponseCode;
 import com.IFS.Identity.dto.request.UserCreationRequest;
 import com.IFS.Identity.dto.request.UserUpdateRequest;
+import com.IFS.Identity.dto.response.ApiResponseSuccess;
+import com.IFS.Identity.dto.response.UserResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.Path;
 import java.util.List;
 
 @RestController
@@ -17,9 +20,15 @@ public class UserController {
 
     //create
     @PostMapping("/users")
-    User createUser(@RequestBody UserCreationRequest request)
+    ApiResponseSuccess<User> createUser(@Valid @RequestBody UserCreationRequest request)
     {
-        return userService.createRequest(request);
+        ApiResponseSuccess<User> apiResponseSuccess = new ApiResponseSuccess<>();
+
+        apiResponseSuccess.setCode(ResponseCode.SUCCESS_STATUS.getCode());
+        apiResponseSuccess.setMessage(ResponseCode.SUCCESS_STATUS.getMessage());
+        apiResponseSuccess.setData(userService.createRequest(request));
+
+        return apiResponseSuccess;
     }
 
     //read
@@ -37,17 +46,27 @@ public class UserController {
 
     //update
     @PutMapping("/{userId}")
-    User updateUserById(@RequestBody UserUpdateRequest request, @PathVariable("userId") String userId)
+    User updateUserById(@Valid @RequestBody UserUpdateRequest request, @PathVariable("userId") String userId)
     {
         return userService.updateUserById(request,userId);
     }
 
     //delete
-    @DeleteMapping("{userId}")
-    String deleteUser(@PathVariable("userId") String userId)
+    @DeleteMapping("/{userId}")
+    ApiResponseSuccess deleteUser(@PathVariable("userId") String userId)
     {
+        ApiResponseSuccess apiResponseSuccess = new ApiResponseSuccess<>();
+        apiResponseSuccess.setCode(ResponseCode.SUCCESS_STATUS.getCode());
+        apiResponseSuccess.setMessage("User has been delete");
         userService.deleteUserById(userId);
-        return "user has been deleted";
+        return apiResponseSuccess;
     }
+
+//    @DeleteMapping("/user/{userName}")
+//    String deleteUserByName(@PathVariable("userName") String userName)
+//    {
+//        userService.deleteUserByUserName(userName);
+//        return "user has been deleted";
+//    }
 
 }
