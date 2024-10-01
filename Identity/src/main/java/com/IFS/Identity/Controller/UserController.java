@@ -39,14 +39,14 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    User getUserById(@PathVariable("userId") String userId)
+    UserResponse getUserById(@PathVariable("userId") String userId)
     {
         return userService.getUserById(userId);
     }
 
     //update
     @PutMapping("/{userId}")
-    User updateUserById(@Valid @RequestBody UserUpdateRequest request, @PathVariable("userId") String userId)
+    UserResponse updateUserById(@Valid @RequestBody UserUpdateRequest request, @PathVariable("userId") String userId)
     {
         return userService.updateUserById(request,userId);
     }

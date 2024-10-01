@@ -5,6 +5,7 @@ import com.IFS.Identity.dto.request.UserCreationRequest;
 import com.IFS.Identity.dto.request.UserUpdateRequest;
 import com.IFS.Identity.dto.response.UserResponse;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import java.util.Optional;
