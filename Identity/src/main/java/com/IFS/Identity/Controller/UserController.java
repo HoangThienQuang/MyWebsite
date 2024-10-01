@@ -6,11 +6,11 @@ import com.IFS.Identity.dto.ResponseCode;
 import com.IFS.Identity.dto.request.UserCreationRequest;
 import com.IFS.Identity.dto.request.UserUpdateRequest;
 import com.IFS.Identity.dto.response.ApiResponseSuccess;
+import com.IFS.Identity.dto.response.UserResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.Path;
 import java.util.List;
 
 @RestController
