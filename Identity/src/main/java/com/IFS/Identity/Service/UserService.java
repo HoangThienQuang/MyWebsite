@@ -9,6 +9,8 @@ import com.IFS.Identity.dto.request.UserCreationRequest;
 import com.IFS.Identity.dto.request.UserUpdateRequest;
 import com.IFS.Identity.dto.response.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.mapstruct.Mapper;
 
@@ -35,7 +37,8 @@ public class UserService {
 //        //user.setBirthDay(request.getBirthDay());
 //        user.setPhoneNumber(request.getPhoneNumber());
         User user = userMapper.toUser(request);
-
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setPassWord(passwordEncoder.encode(request.getPassWord()));
 
         return userRepository.save(user);
     }

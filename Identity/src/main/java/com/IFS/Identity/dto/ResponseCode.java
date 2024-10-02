@@ -9,6 +9,7 @@ public enum ResponseCode {
     NOT_IMPLEMENT_EXCEPTION(9999,"Uncategoried Error"),
     SUCCESS_STATUS(1000,"Request success"),
     USER_EXISTED(1102, "User Existed"),
+    USER_NOT_EXIST(1006,"User not exist"),
     PASSWORD_INVALID(1103,"Password must be at least 8 characters"),
     USERNAME_INVALID(1104,"User name must be at least 3 characters"),
     USER_ID_INVALID(1105,"Can not find any user match with input ID")

@@ -22,13 +22,18 @@ public class UserController {
     @PostMapping("/users")
     ApiResponseSuccess<User> createUser(@Valid @RequestBody UserCreationRequest request)
     {
-        ApiResponseSuccess<User> apiResponseSuccess = new ApiResponseSuccess<>();
+//        ApiResponseSuccess<User> apiResponseSuccess = new ApiResponseSuccess<>();
+//
+//        apiResponseSuccess.setCode(ResponseCode.SUCCESS_STATUS.getCode());
+//        apiResponseSuccess.setMessage(ResponseCode.SUCCESS_STATUS.getMessage());
+//        apiResponseSuccess.setData(userService.createRequest(request));
 
-        apiResponseSuccess.setCode(ResponseCode.SUCCESS_STATUS.getCode());
-        apiResponseSuccess.setMessage(ResponseCode.SUCCESS_STATUS.getMessage());
-        apiResponseSuccess.setData(userService.createRequest(request));
-
-        return apiResponseSuccess;
+        return ApiResponseSuccess.<User>builder()
+                .code(ResponseCode.SUCCESS_STATUS.getCode())
+                .message(ResponseCode.SUCCESS_STATUS.getMessage())
+                .data(userService.createRequest(request))
+                .build();
+        //return apiResponseSuccess;
     }
 
     //read
@@ -55,11 +60,15 @@ public class UserController {
     @DeleteMapping("/{userId}")
     ApiResponseSuccess deleteUser(@PathVariable("userId") String userId)
     {
-        ApiResponseSuccess apiResponseSuccess = new ApiResponseSuccess<>();
-        apiResponseSuccess.setCode(ResponseCode.SUCCESS_STATUS.getCode());
-        apiResponseSuccess.setMessage("User has been delete");
-        userService.deleteUserById(userId);
-        return apiResponseSuccess;
+//        ApiResponseSuccess apiResponseSuccess = new ApiResponseSuccess<>();
+//        apiResponseSuccess.setCode(ResponseCode.SUCCESS_STATUS.getCode());
+//        apiResponseSuccess.setMessage("User has been delete");
+//        userService.deleteUserById(userId);
+        //return apiResponseSuccess;
+        return ApiResponseSuccess.builder()
+                .code(ResponseCode.SUCCESS_STATUS.getCode())
+                .message("User has been delete")
+                .build();
     }
 
 //    @DeleteMapping("/user/{userName}")
