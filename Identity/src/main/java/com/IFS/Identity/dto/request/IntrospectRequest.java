@@ -1,4 +1,4 @@
-package com.IFS.Identity.dto.response;
+package com.IFS.Identity.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AuthenticationResponse {
+public class IntrospectRequest {
     private String token;
-    private boolean isAuthenticated;
 }

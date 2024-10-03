@@ -12,7 +12,8 @@ public enum ResponseCode {
     USER_NOT_EXIST(1006,"User not exist"),
     PASSWORD_INVALID(1103,"Password must be at least 8 characters"),
     USERNAME_INVALID(1104,"User name must be at least 3 characters"),
-    USER_ID_INVALID(1105,"Can not find any user match with input ID")
+    USER_ID_INVALID(1105,"Can not find any user match with input ID"),
+    NOT_AUTHENTICATED(1106,"User was not authenticated")
     ;
     private final int code;
     private final String message;
