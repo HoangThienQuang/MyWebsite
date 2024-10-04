@@ -24,7 +24,7 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public User createRequest(UserCreationRequest request){
+    public UserResponse createRequest(UserCreationRequest request){
         if (userRepository.existsByUserName(request.getUserName()))
             throw new AppException(ResponseCode.USER_EXISTED);
 
@@ -40,7 +40,8 @@ public class UserService {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassWord(passwordEncoder.encode(request.getPassWord()));
 
-        return userRepository.save(user);
+        //return userRepository.save(user);
+        return userMapper.toUserResponse(user);
     }
 
     public List<User> getAllUser()

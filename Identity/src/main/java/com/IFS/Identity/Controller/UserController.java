@@ -20,7 +20,7 @@ public class UserController {
 
     //create
     @PostMapping("/users")
-    ApiResponseSuccess<User> createUser(@Valid @RequestBody UserCreationRequest request)
+    ApiResponseSuccess<UserResponse> createUser(@Valid @RequestBody UserCreationRequest request)
     {
 //        ApiResponseSuccess<User> apiResponseSuccess = new ApiResponseSuccess<>();
 //
@@ -28,7 +28,7 @@ public class UserController {
 //        apiResponseSuccess.setMessage(ResponseCode.SUCCESS_STATUS.getMessage());
 //        apiResponseSuccess.setData(userService.createRequest(request));
 
-        return ApiResponseSuccess.<User>builder()
+        return ApiResponseSuccess.<UserResponse>builder()
                 .code(ResponseCode.SUCCESS_STATUS.getCode())
                 .message(ResponseCode.SUCCESS_STATUS.getMessage())
                 .data(userService.createRequest(request))
@@ -37,10 +37,21 @@ public class UserController {
     }
 
     //read
+//    @GetMapping("/allUsers1")
+//    List<User> getAllUser1()
+//    {
+//        return userService.getAllUser();
+//    }
     @GetMapping("/allUsers")
-    List<User> getAllUser()
+    ApiResponseSuccess<Object> getAllUser()
     {
-        return userService.getAllUser();
+        //return userService.getAllUser();
+        List<User> result = userService.getAllUser();
+        return ApiResponseSuccess.builder()
+                .code(ResponseCode.SUCCESS_STATUS.getCode())
+                .message(ResponseCode.SUCCESS_STATUS.getMessage())
+                .data(result)
+                .build();
     }
 
     @GetMapping("/{userId}")
