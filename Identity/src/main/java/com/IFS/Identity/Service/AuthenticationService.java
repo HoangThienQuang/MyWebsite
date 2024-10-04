@@ -91,6 +91,5 @@ public class AuthenticationService {
         return IntrospectResponse.builder()
                 .valid(verify && expiryTime.after(new Date()))
                 .build();
-
     }
 }
