@@ -1,5 +1,6 @@
 package com.IFS.Identity.Service;
 
+import com.IFS.Identity.Entity.User;
 import com.IFS.Identity.Exception.AppException;
 import com.IFS.Identity.Repositoty.UserRepository;
 import com.IFS.Identity.dto.ResponseCode;
@@ -21,11 +22,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.StringJoiner;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +49,7 @@ public class AuthenticationService {
         boolean result = passwordEncoder.matches(request.getPassWord(), user.getPassWord());
         if (!result)
             throw new AppException(ResponseCode.NOT_AUTHENTICATED);
-        var token = createToken(request.getUserName());
+        var token = createToken(user);
 
         return AuthenticationResponse.builder()
                 .token(token)
@@ -54,18 +57,18 @@ public class AuthenticationService {
                 .build();
     }
 
-    private String createToken(String userName)
+    private String createToken(User user)
     {
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(userName)
+                .subject(user.getUserName())
                 .issuer("HTQ_author")
                 .issueTime(new Date())
                 .expirationTime(new Date(
                         Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
                 ))
-                .claim("TestClaim","Custom")
+                .claim("scope",buildScope(user))
                 .build();
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
         JWSObject jwsObject = new JWSObject(jwsHeader, payload);
@@ -91,5 +94,16 @@ public class AuthenticationService {
         return IntrospectResponse.builder()
                 .valid(verify && expiryTime.after(new Date()))
                 .build();
+    }
+
+    private String buildScope (User user)
+    {
+        //create a return list string : [one two three for]
+        StringJoiner stringJoiner = new StringJoiner("");
+        if(!CollectionUtils.isEmpty(user.getRole()))
+        {
+            user.getRole().forEach(stringJoiner::add);
+        }
+        return stringJoiner.toString();
     }
 }

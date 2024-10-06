@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 public class UserCreationRequest {
@@ -14,6 +15,7 @@ public class UserCreationRequest {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    private Set<String> role;
     //private LocalDate birthDay;
 
 }
