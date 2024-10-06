@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserResponse {
     private String Id;
-
     private String userName;
-    private String passWord;
     private String firstName;
     private String lastName;
     private String phoneNumber;

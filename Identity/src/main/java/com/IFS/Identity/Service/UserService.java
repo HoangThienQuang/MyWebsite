@@ -1,6 +1,7 @@
 package com.IFS.Identity.Service;
 
 import com.IFS.Identity.Entity.User;
+import com.IFS.Identity.Enums.Roles;
 import com.IFS.Identity.Exception.AppException;
 import com.IFS.Identity.Mapper.UserMapper;
 import com.IFS.Identity.Repositoty.UserRepository;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.mapstruct.Mapper;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -24,7 +26,7 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public User createRequest(UserCreationRequest request){
+    public UserResponse createRequest(UserCreationRequest request){
         if (userRepository.existsByUserName(request.getUserName()))
             throw new AppException(ResponseCode.USER_EXISTED);
 
@@ -39,8 +41,15 @@ public class UserService {
         User user = userMapper.toUser(request);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassWord(passwordEncoder.encode(request.getPassWord()));
+        HashSet<String> role = new HashSet<>();
+        role.add(Roles.USER.name());
+        user.setRole(role);
+        userRepository.save(user);
 
-        return userRepository.save(user);
+        //return userMapper.toUserResponse(user);
+        UserResponse userResponse = userMapper.toUserResponse(user);
+        userResponse.setId(user.getId());
+        return userResponse;
     }
 
     public List<User> getAllUser()
@@ -58,13 +67,10 @@ public class UserService {
     {
         User user = userRepository.findById(userId).orElseThrow(() -> new AppException(ResponseCode.USER_ID_INVALID));
         userMapper.updateRequest(user, request);
-//        user.setPassWord(request.getPassWord());
-//        user.setFirstName(request.getFirstName());
-//        user.setLastName(request.getLastName());
-//        //user.setBirthDay(request.getBirthDay());
-//        user.setPhoneNumber(request.getPhoneNumber());
+        
         UserResponse userResponse = userMapper.toUserResponse(userRepository.save(user));
         userResponse.setId(user.getId());
+
         return userResponse;
     }
 
